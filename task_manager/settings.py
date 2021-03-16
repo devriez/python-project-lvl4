@@ -24,6 +24,7 @@ load_dotenv(dotenv_path)
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
 
+SECRET_KEY='nr!!^hk09x*^9v85_$kmv*28ve=w8_xl4id4xrdkwsk+yv4c=)'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
