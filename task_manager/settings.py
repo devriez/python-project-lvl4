@@ -36,9 +36,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'nr!!^hk09x*^9v85_$kmv*28ve=w8_xl4id4xrdkwsk+yv4c=)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['devriez-task-manager-project.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
