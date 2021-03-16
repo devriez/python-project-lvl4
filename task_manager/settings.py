@@ -18,13 +18,11 @@ from dotenv import load_dotenv
 import dj_database_url
 
 # Add code for python-dotenv
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 DATABASE_PASSWORD = os.environ.get("DATABASE_PASSWORD")
 
-SECRET_KEY='nr!!^hk09x*^9v85_$kmv*28ve=w8_xl4id4xrdkwsk+yv4c=)'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
