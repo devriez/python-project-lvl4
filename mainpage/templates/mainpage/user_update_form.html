@@ -5,18 +5,17 @@
 
 
 {% block content %}
-
   <div class="container wrapper flex-grow-1">    
     <h1 class="h2">
-    Авторизация
+    Изменение пользователя
     </h1>
     <div>
-        <form id="add_form" method="post">
+        <form method="post">
           {% csrf_token %}
-          {{form}}
-          <button type='submit' form="add_form" class="btn btn-primary mt-4">Добавить</button>
+            {{ form.as_p }}
+            <input type="submit" value="Обновить">
         </form>
-      </div>
+    </div>
 
   </div>
 {% endblock %}

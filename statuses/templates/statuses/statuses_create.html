@@ -1,6 +1,7 @@
 {% extends 'mainpage/main_template.html' %}
 
 {% block title %}
+Добавление статуса
 {% endblock %}
 
 
@@ -8,14 +9,13 @@
 
 <div class="container wrapper flex-grow-1">
   <h1 class="my-4">
-  Регистрация
+  Создать статус
   </h1>
   <div>
     <form id="add_form" method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <br>
-      <button type='submit' form="add_form" class="btn btn-primary mt-4">Добавить</button>
+      <button type='submit' form="add_form" class="btn btn-primary">Создать</button>
     </form>
   </div>
 </div>

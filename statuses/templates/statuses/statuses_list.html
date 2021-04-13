@@ -1,0 +1,39 @@
+{% extends 'mainpage/main_template.html' %}
+
+{% block title %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4 h2">
+    Статусы
+    </h1>
+    <a href='{% url "create_status" %}'>Создать статус</a>
+    <table class="table table-striped mt-2">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Дата создания</th>
+        <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for status in statuses_list %}
+            <tr>
+            <th scope="row">{{ status.pk }}</th>
+            <td>{{ status.name }}</td>
+            <td>{{ status.created_at }}</td>
+            <td>
+                {% if user.pk == request.user.pk %}
+                    <a href="{% url 'update_status' status.pk %}">Изменить</a> <br>
+                    <a href="{% url 'delete_status' status.pk %}">Удалить</a>
+                {% endif %}
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

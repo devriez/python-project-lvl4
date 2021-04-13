@@ -27,8 +27,10 @@
             <td>{{ user.first_name }} {{ user.last_name }}</td>
             <td>{{ user.date_joined }}</td>
             <td>
-                <a href='#'>Изменить</a> <br>
-                <a href='#'>Удалить</a>
+                {% if user.pk == request.user.pk %}
+                    <a href="{% url 'update_user' user.pk %}"">Изменить</a> <br>
+                    <a href="{% url 'delete_user' user.pk %}">Удалить</a>
+                {% endif %}
             </td>
             </tr>
         {% endfor %}
