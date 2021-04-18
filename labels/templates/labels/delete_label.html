@@ -1,0 +1,21 @@
+{% extends 'mainpage/main_template.html' %}
+
+{% block title %}
+{% endblock %}
+
+
+{% block content %}
+  <div class="container wrapper flex-grow-1">    
+    <h1 class="h2">
+    Удаление метки
+    </h1>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <p>Вы уверены, что хотите удалить "{{ object }}"?</p>
+            <input type="submit" value="Да, удалить" class='btn btn-danger'>
+        </form>
+      </div>
+
+  </div>
+{% endblock %}

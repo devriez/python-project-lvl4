@@ -1,0 +1,45 @@
+{% extends 'mainpage/main_template.html' %}
+
+{% block title %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container wrapper flex-grow-1">
+    <h1 class="my-4 h2">
+    Задачи
+    </h1>
+    <a href='{% url "create_task" %}'>Создать задачи</a>
+    <table class="table table-striped mt-2">
+    <thead>
+        <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Имя</th>
+        <th scope="col">Статус</th>
+        <th scope="col">Автор</th>
+        <th scope="col">Исполнитель</th>
+        <th scope="col">Дата создания</th>
+        <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks_list %}
+            <tr>
+            <th scope="row">{{ task.pk }}</th>
+            <td>{{ task.name }}</td>
+            <td>{{ task.status }}</td>
+            <td>{{ task.creator }}</td>
+            <td>{{ task.executor }}</td>
+            <td>{{ task.created_at }}</td>
+            <td>
+                <a href="{% url 'update_task' task.pk %}">Изменить</a> <br>
+                {% if task.creator == request.user.pk %}
+                    <a href="{% url 'delete_task' task.pk %}">Удалить</a>
+                {% endif %}
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

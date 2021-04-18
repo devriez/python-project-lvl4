@@ -31,8 +31,8 @@
     </style>
 
   </head>
-  {{ request.user.id }}
   <body>
+    Тесты !
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
       <a class="my-0 mr-md-auto font-weight-max text-dark font-size-large" href="/">Менеджер задач</a>
       <nav class="my-2 my-md-0 mr-md-3"></nav>
@@ -41,6 +41,7 @@
         <a class="p-2 text-dark" href="{% url 'register_page' %}">Регистрация</a>
         <a class="btn btn-outline-primary" href="{% url 'login_page' %}"> Вход </a>
         {% else %}
+        <a class="p-2 text-dark" href="{% url 'tasks' %}">Задачи</a>
         <a class="p-2 text-dark" href="{% url 'statuses' %}">Статусы</a>
         <a class="btn btn-outline-primary" href="{% url 'logout_page' %}"> Выход </a>
         {% endif %}

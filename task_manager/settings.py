@@ -40,6 +40,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'labels',
+    'tasks',
     'statuses',
     'mainpage',
     'django.contrib.admin',
