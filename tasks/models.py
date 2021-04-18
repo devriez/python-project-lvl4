@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 from statuses.models import Status
+from labels.models import Label
 
 class Task(models.Model):
     name = models.CharField(max_length=75)
@@ -39,7 +41,8 @@ class Task(models.Model):
         through='RelatedModel',
         through_fields=('task', 'label'),
         blank=True,
-        verbose_name='Labels'
+        verbose_name='Labels',
+        related_name='labels'
     )
 
     class Meta():
