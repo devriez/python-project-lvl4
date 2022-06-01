@@ -1,7 +1,7 @@
 """task_manager URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.1/topics/http/urls/
+    https://docs.djangoproject.com/en/4.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from task_manager.views import index
+from .views import UserLogin, UserLogout
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    path('', include('mainpage.urls')),
     path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name="task_manager/index.html"), name='start-page'),  # noqa: E501
+    path('users/', include('users.urls')),
+    path('login/', UserLogin.as_view(), name='user-login'),
+    path('logout/', UserLogout.as_view(), name='user-logout'),
     path('statuses/', include('statuses.urls')),
     path('tasks/', include('tasks.urls')),
     path('labels/', include('labels.urls')),

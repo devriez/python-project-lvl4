@@ -1,0 +1,20 @@
+{% extends 'task_manager/main.html' %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block title %}
+Редактирование пользователя
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="my-4">
+        Изменение пользователя
+    </h1>
+
+    <form method="post">{% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" value="Изменить">
+    </form>
+
+{% endblock %}

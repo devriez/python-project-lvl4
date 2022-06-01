@@ -1,42 +1,43 @@
-from django.shortcuts import render
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from labels.models import Label
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.mixins import LoginRequiredMixin
+from task_manager.mixins import AuthRequiredMixin
+from django.contrib import messages
+from django.shortcuts import redirect
 
-from labels.models import Label
-from labels.forms import RegisterLabelForm
 
-
-class LabelsListView(LoginRequiredMixin, ListView):
+class LabelsListView(AuthRequiredMixin, ListView):
+    login_url = reverse_lazy('user-login')
     model = Label
-    template_name = 'labels/labels_list.html'
-    context_object_name = 'labels_list'
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
 
-class CreateLabelView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+
+class LabelCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
     model = Label
-    template_name = 'labels/label_create.html'
-    form_class = RegisterLabelForm
-    success_url = reverse_lazy('labels')
-    success_message = "Метка успешно создан"
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    fields = '__all__'
+    success_message = 'Метка успешно создана'
 
 
-class UpdateLabelView(LoginRequiredMixin, UpdateView):
+class LabelDelete(AuthRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Label
-    template_name = 'labels/label_update_form.html'
-    form_class = RegisterLabelForm
-    success_url = reverse_lazy('labels')
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    success_url = reverse_lazy('labels-list')
+    success_message = 'Метка успешно удалена'
 
-class DeleteLabelView(LoginRequiredMixin, DeleteView):
+    def post(self, request, *args, **kwargs):
+        if self.get_object().task_set.all():
+            messages.error(
+                self.request,
+                'Невозможно удалить метку, потому что она используется'
+            )
+            return redirect('labels-list')
+
+        return super().post(request, *args, **kwargs)
+
+
+class LabelUpdate(AuthRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Label
-    success_url = reverse_lazy('labels')
-    template_name = 'labels/delete_label.html'
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    fields = '__all__'
+    success_message = 'Метка успешно изменена'
+    template_name = 'labels/label_update.html'
+    success_url = reverse_lazy('labels-list')

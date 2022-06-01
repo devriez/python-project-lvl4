@@ -1,9 +1,25 @@
+"""task_manager URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
 from django.urls import path
-from statuses.views import StatusesListView, CreateStatusView, UpdateStatusView,  DeleteStatusView
+from .views import StatusListView, StatusCreateView, StatusDelete, StatusUpdate
+
 
 urlpatterns = [
-    path('', StatusesListView.as_view(), name='statuses'),
-    path('create/', CreateStatusView.as_view(), name='create_status'),
-    path('<int:pk>/delete/', DeleteStatusView.as_view(), name='delete_status'),
-    path('<int:pk>/update/', UpdateStatusView.as_view(), name='update_status'),
+    path('', StatusListView.as_view(), name='statuses-list'),
+    path('create/', StatusCreateView.as_view(), name='status-create'),
+    path('<int:pk>/update/', StatusUpdate.as_view(), name='status-update'),
+    path('<int:pk>/delete/', StatusDelete.as_view(), name='status-delete')
 ]

@@ -1,49 +1,43 @@
-from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from .models import Task
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
+from task_manager.mixins import AuthRequiredMixin
+from tasks.mixins import OwnTaskDeletePermissionMixin
+from django.views.generic.detail import DetailView
+from django_filters.views import FilterView
+from .filters import TaskFilter
 
-from tasks.models import Task
-from tasks.forms import RegisterTaskForm
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-class TasksListView(LoginRequiredMixin, ListView):
+class TasksListView(AuthRequiredMixin, FilterView):
     model = Task
-    template_name = 'tasks/tasks_list.html'
-    context_object_name = 'tasks_list'
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    filterset_class = TaskFilter
 
-class CreateTaskView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+
+class TaskCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
     model = Task
-    template_name = 'tasks/task_create.html'
-    form_class = RegisterTaskForm
-    success_url = reverse_lazy('tasks')
-    success_message = "Статус успешно создан"
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    success_message = 'Задача успешно создана'
+    success_url = reverse_lazy('tasks-list')
+    fields = ['name', 'description', 'executor', 'status', 'labels']
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
 
 
-class UpdateTaskView(LoginRequiredMixin, UpdateView):
+class TaskDelete(AuthRequiredMixin, OwnTaskDeletePermissionMixin, SuccessMessageMixin, DeleteView):  # noqa: E501
     model = Task
-    template_name = 'tasks/task_update_form.html'
-    form_class = RegisterTaskForm
-    success_url = reverse_lazy('tasks')
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    success_url = reverse_lazy('tasks-list')
+    success_message = 'Задача успешно удалена'
 
-class DeleteTaskView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+
+class TaskUpdate(AuthRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Task
-    success_url = reverse_lazy('tasks')
-    template_name = 'tasks/delete_task.html'
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    fields = ['name', 'description', 'executor', 'status', 'labels']
+    success_url = reverse_lazy('tasks-list')
+    success_message = 'Задача успешно изменена'
+    template_name = 'tasks/task_update.html'
 
-    def test_func(self):
-        task = self.get_object()
-        return self.request.user == task.creator
+
+class TaskDetail(AuthRequiredMixin, DetailView):
+    model = Task

@@ -1,57 +1,49 @@
 from django.db import models
-from django.contrib.auth.models import User
-
 from statuses.models import Status
 from labels.models import Label
+from django.contrib.auth import get_user_model
+
 
 class Task(models.Model):
-    name = models.CharField(max_length=75)
+    name = models.CharField(
+        'Имя',
+        max_length=200,
+        unique=True
+        )
     description = models.TextField(
-        'Description', 
-        max_length=200, 
-        blank=True, 
-        null=True
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    status = models.ForeignKey(
-        Status, 
-        blank=True, 
-        null=True, 
-        related_name='status', 
-        on_delete=models.PROTECT,
-        verbose_name='Status'
-    )
+        blank=True,
+        verbose_name='Описание'
+        )
     creator = models.ForeignKey(
-        User, 
-        related_name='creator', 
+        get_user_model(),
         on_delete=models.PROTECT,
-        verbose_name='Creator'
-    )
+        related_name='creator',
+        verbose_name='Автор'
+        )
     executor = models.ForeignKey(
-        User,
-        verbose_name='Executor',
+        get_user_model(),
         on_delete=models.PROTECT,
-        null=True,
+        related_name='executor',
+        verbose_name='Исполнитель',
         blank=True,
-        related_name='executor'
-    )
-
+        null=True
+        )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT,
+        verbose_name='Cтатус'
+        )
+    created_at = models.DateTimeField(auto_now_add=True)
     labels = models.ManyToManyField(
-        Label,
-        through='RelatedModel',
-        through_fields=('task', 'label'),
-        blank=True,
-        verbose_name='Labels',
-        related_name='labels'
-    )
-
-    class Meta():
-        ordering = ['name']
+        Label, through='TaskLabels',
+        verbose_name='Метки',
+        blank=True
+        )
 
     def __str__(self):
         return self.name
 
 
-class RelatedModel(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    label = models.ForeignKey(Label, on_delete=models.PROTECT)
+class TaskLabels(models.Model):
+    tasks = models.ForeignKey(Task, on_delete=models.CASCADE)
+    labels = models.ForeignKey(Label, on_delete=models.PROTECT)

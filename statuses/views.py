@@ -1,42 +1,45 @@
-from django.shortcuts import render
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from statuses.models import Status
+from statuses.forms import StatusForm
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
+from task_manager.mixins import AuthRequiredMixin
+from django.contrib import messages
+from django.shortcuts import redirect
 
-from statuses.models import Status
-from statuses.forms import RegisterStatusesForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-# Create your views here.
 
-class StatusesListView(LoginRequiredMixin, ListView):
+class StatusListView(AuthRequiredMixin, ListView):
+    login_url = reverse_lazy('user-login')
     model = Status
-    template_name = 'statuses/statuses_list.html'
-    context_object_name = 'statuses_list'
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
 
-class CreateStatusView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+
+class StatusCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
     model = Status
-    template_name = 'statuses/statuses_create.html'
-    form_class = RegisterStatusesForm
-    success_url = reverse_lazy('statuses')
-    success_message = "Статус успешно создан"
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    form_class = StatusForm
+    success_url = reverse_lazy('statuses-list')
+    success_message = 'Статус успешно создан'
 
 
-class UpdateStatusView(LoginRequiredMixin, UpdateView):
+class StatusDelete(AuthRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Status
-    template_name = 'statuses/status_update_form.html'
-    form_class = RegisterStatusesForm
-    success_url = reverse_lazy('statuses')
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    success_url = reverse_lazy('statuses-list')
+    success_message = 'Статус успешно удален'
 
-class DeleteStatusView(LoginRequiredMixin, DeleteView):
+    def post(self, request, *args, **kwargs):
+        if self.get_object().task_set.all():
+            messages.error(
+                self.request,
+                'Невозможно удалить статус, потому что он используется'
+            )
+            return redirect('statuses-list')
+
+        return super().post(request, *args, **kwargs)
+
+
+class StatusUpdate(AuthRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Status
-    success_url = reverse_lazy('statuses')
-    template_name = 'statuses/delete_status.html'
-    login_url = reverse_lazy('login_page')
-    redirect_field_name = 'redirect_to'
+    form_class = StatusForm
+    success_message = 'Статус успешно изменен'
+    template_name = 'statuses/status_update.html'
+    success_url = reverse_lazy('statuses-list')
