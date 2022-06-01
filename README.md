@@ -4,6 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/03418627bf779a9a7991/maintainability)](https://codeclimate.com/github/devriez/python-project-lvl4/maintainability)
 
 
+
 Simple task manager to explore and implement major Django features.
 
 ## Demo
