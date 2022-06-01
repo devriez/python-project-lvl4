@@ -11,7 +11,6 @@ migrate:
 	poetry run python manage.py migrate
 
 setup:
-	cp -n .env.example .env || true
 	make install
 	make migrate
 
@@ -28,7 +27,7 @@ test:
 	poetry run python manage.py test
 
 test-coverage:
-	poetry run coverage run manage.py test task_manager
+	poetry run coverage run manage.py test .
 	poetry run coverage html
 	poetry run coverage report
 
