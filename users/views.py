@@ -28,7 +28,7 @@ class UserUpdate(AuthRequiredMixin, SelfEditPermissionMixin, SuccessMessageMixin
     model = get_user_model()
     form_class = UserForm
     success_url = reverse_lazy('users-list')
-    success_message = 'Пользователь успешно изменен'
+    success_message = 'Пользователь успешно изменён'
 
 
 class UserDelete(SelfEditPermissionMixin, SuccessMessageMixin, DeleteView):
