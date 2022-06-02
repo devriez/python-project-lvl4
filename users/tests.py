@@ -36,7 +36,7 @@ class UserTest(TestCase):
         self.assertRedirects(response, reverse('user-login'))
         user = get_user_model().objects.get(
             username=user_to_create['username']
-            )
+        )
         self.assertUser(user, user_to_create)
 
     def test_get_users_update(self):
@@ -70,7 +70,7 @@ class UserTest(TestCase):
         response = self.client.post(
             reverse('user-update', args=[user.pk]),
             user_to_update
-            )
+        )
         self.assertRedirects(response, reverse('users-list'))
         user.refresh_from_db()
 

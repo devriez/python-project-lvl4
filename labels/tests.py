@@ -42,10 +42,10 @@ class LabelTest(TestCase):
         """Tests POST /labels/<id>/update/"""
         label = Label.objects.first()
         name = 'new name'
-        response = self.client.post(reverse('label-update', args=[label.id]), {
-            'name': name
-            }
-            )
+        response = self.client.post(
+            reverse('label-update', args=[label.id]),
+            {'name': name}
+        )
         self.assertRedirects(response, reverse('labels-list'))
         label.refresh_from_db()
         self.assertEqual(label.name, name)

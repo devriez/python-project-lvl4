@@ -68,7 +68,7 @@ class TaskTest(TestCase):
         response = self.client.post(
             reverse('task-update', args=[task.id]),
             task_edit_data
-            )
+        )
         self.assertRedirects(response, reverse('tasks-list'))
         task.refresh_from_db()
         self.assertTask(task, task_edit_data)
@@ -78,15 +78,14 @@ class TaskTest(TestCase):
         task = Task.objects.first()
         response = self.client.get(
             reverse('task-delete', args=[task.id])
-            )
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_post_task_delete(self):
         """Tests POST /tasks/<int:pk>/delete"""
         task = Task.objects.first()
-        response = self.client.post(reverse(
-            'task-delete',
-            args=[task.id]
-            ))
+        response = self.client.post(
+            reverse('task-delete', args=[task.id])
+        )
         self.assertRedirects(response, reverse('tasks-list'))
         self.assertEqual(Task.objects.count(), 0)

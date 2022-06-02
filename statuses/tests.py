@@ -41,11 +41,10 @@ class StatusTest(TestCase):
         status = Status.objects.first()
         old_name = status.name
         new_name = old_name[::-1]
-        response = self.client.post(reverse(
-            'status-update',
-            args=[status.id]),
+        response = self.client.post(
+            reverse('status-update', args=[status.id]),
             {'name': new_name}
-            )
+        )
         status.refresh_from_db()
         self.assertRedirects(response, reverse('statuses-list'))
         self.assertEqual(status.name, new_name)

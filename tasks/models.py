@@ -9,17 +9,17 @@ class Task(models.Model):
         'Имя',
         max_length=200,
         unique=True
-        )
+    )
     description = models.TextField(
         blank=True,
         verbose_name='Описание'
-        )
+    )
     creator = models.ForeignKey(
         get_user_model(),
         on_delete=models.PROTECT,
         related_name='creator',
         verbose_name='Автор'
-        )
+    )
     executor = models.ForeignKey(
         get_user_model(),
         on_delete=models.PROTECT,
@@ -27,18 +27,18 @@ class Task(models.Model):
         verbose_name='Исполнитель',
         blank=True,
         null=True
-        )
+    )
     status = models.ForeignKey(
         Status,
         on_delete=models.PROTECT,
         verbose_name='Статус'
-        )
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     labels = models.ManyToManyField(
         Label, through='TaskLabels',
         verbose_name='Метки',
         blank=True
-        )
+    )
 
     def __str__(self):
         return self.name
