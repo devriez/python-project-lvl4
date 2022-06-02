@@ -20,7 +20,7 @@ class UserCreate(SuccessMessageMixin, CreateView):
     model = get_user_model()
     form_class = UserForm
     success_url = reverse_lazy('user-login')
-    success_message = 'Пользователь успешно создан'
+    success_message = 'Пользователь успешно зарегистрирован'
 
 
 class UserUpdate(AuthRequiredMixin, SelfEditPermissionMixin, SuccessMessageMixin, UpdateView):  # noqa: E501
