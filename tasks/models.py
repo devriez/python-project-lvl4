@@ -31,7 +31,7 @@ class Task(models.Model):
     status = models.ForeignKey(
         Status,
         on_delete=models.PROTECT,
-        verbose_name='Cтатус'
+        verbose_name='Статус'
         )
     created_at = models.DateTimeField(auto_now_add=True)
     labels = models.ManyToManyField(
