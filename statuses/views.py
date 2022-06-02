@@ -24,7 +24,7 @@ class StatusCreateView(AuthRequiredMixin, SuccessMessageMixin, CreateView):
 class StatusDelete(AuthRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Status
     success_url = reverse_lazy('statuses-list')
-    success_message = 'Статус успешно удален'
+    success_message = 'Статус успешно удалён'
 
     def post(self, request, *args, **kwargs):
         if self.get_object().task_set.all():
@@ -40,6 +40,6 @@ class StatusDelete(AuthRequiredMixin, SuccessMessageMixin, DeleteView):
 class StatusUpdate(AuthRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Status
     form_class = StatusForm
-    success_message = 'Статус успешно изменен'
+    success_message = 'Статус успешно изменён'
     template_name = 'statuses/status_update.html'
     success_url = reverse_lazy('statuses-list')
