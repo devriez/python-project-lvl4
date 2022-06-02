@@ -35,7 +35,7 @@ class UserDelete(SelfEditPermissionMixin, SuccessMessageMixin, DeleteView):
     template_name = 'users/user_delete.html'
     model = get_user_model()
     success_url = reverse_lazy('users-list')
-    success_message = 'Пользователь успешно удален'
+    success_message = 'Пользователь успешно удалён'
 
     def post(self, request, *args, **kwargs):
         if self.get_object().creator.all() or self.get_object().executor.all():
